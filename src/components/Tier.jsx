@@ -1,16 +1,22 @@
-import Item from "./Item";
+import { Item } from "./Item";
 
-function Tier(props) {
+//// I made this for us so we can speed up the workshop :)
+function Tier({ name, color, items, setItems }) {
   return (
-    <div>
-      <h1>Tier {props.tier}</h1>
-
-      {/* Turns a list of the JavaScript objects to a list of rendered components */}
-      {/* Go through the list and for each object, use the data to make an <Item/> */}
-      {props.list.map((item) => (
-        // This calls Item(name, image) in components/Item.jsx
-        <Item name={item.name} image={item.image} />
-      ))}
+    <div className="tier">
+      <div
+        style={{
+          background: color,
+        }}
+        className="tier-header"
+      >
+        <h1>{name}</h1>
+      </div>
+      <div className="tier-items">
+        {items.map((item) => (
+          <Item key={item.key} itemKey={item.key} name={item.name} image={item.image} setItems={setItems} />
+        ))}
+      </div>
     </div>
   );
 }

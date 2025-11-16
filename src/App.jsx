@@ -1,66 +1,132 @@
+import { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import Tier from "./components/Tier";
-import { useState } from "react";
+
+import initialData from "../data.json";
+
+const colors = {
+  A: "#ed8796",
+  B: "#f6ad55",
+  C: "#e0af68",
+  D: "#a6da95",
+  F: "#8aadf4",
+};
 
 function App() {
-  // const [counter, setCounter] = useState(0);
+  const [tierA, setTierA] = useState([]);
+  const [tierB, setTierB] = useState([]);
+  const [tierC, setTierC] = useState([]);
+  const [tierD, setTierD] = useState([]);
+  const [tierF, setTierF] = useState([]);
 
-  // States for our controlled inputs
-  const [tier, setTier] = useState("");
-  const [image, setImage] = useState("");
-  const [name, setName] = useState("");
+  const [selectedTier, setSelectedTier] = useState("A");
+  const [imgUrl, setImgUrl] = useState("");
+  const [itemName, setItemName] = useState("");
 
-  // States for our data
-  const [aTierItems, setATierItems] = useState([]);
-  const [fTierItems, setFTierItems] = useState([]);
+  const [importData, setImportData] = useState("");
 
-  function addToTier() {
-    if (tier == "A") {
-      // Set the aTierItems list to...
-      setATierItems(
-        // A new list equalling whatever it is now, plus this new object added to the back of the list
-        aTierItems.concat({
-          image: image,
-          name: name,
-        })
-      );
-    } else if (tier == "F") {
-      setFTierItems(
-        fTierItems.concat({
-          image: image,
-          name: name,
-        })
-      );
+  const handleDataImport = useCallback((importData) => {
+    const data = typeof importData === "string" ? JSON.parse(importData) : importData;
+    setTierA(data.A || []);
+    setTierB(data.B || []);
+    setTierC(data.C || []);
+    setTierD(data.D || []);
+    setTierF(data.F || []);
+  });
+  useEffect(() => {
+    if (initialData) {
+      handleDataImport(JSON.stringify(initialData));
     }
-  }
+  }, []);
 
   return (
     <div className="app">
-      {/* Default HTML-like input tags. Each tag is connected to and updates one state. */}
-      <input
-        type="text"
-        value={tier}
-        onChange={(e) => setTier(e.target.value)}
-        placeholder="Tier"
-      />
-      <input
-        type="text"
-        value={image}
-        onChange={(e) => setImage(e.target.value)}
-        placeholder="Image"
-      />
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
-      />
-      {/* A button that calls the addToTier function when clicked */}
-      <button onClick={addToTier}>Submit</button>
+      <div className="controls">
+        <select
+          name="Select tier"
+          id="tier-select"
+          onChange={(e) => {
+            setSelectedTier(e.target.value);
+          }}
+        >
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+          <option value="F">F</option>
+        </select>
+        <input
+          type="text"
+          placeholder="Item name"
+          onInput={(e) => {
+            setItemName(e.target.value);
+          }}
+        />
+        <input
+          type="text"
+          placeholder="Image URL"
+          onInput={(e) => {
+            setImgUrl(e.target.value);
+          }}
+        />
+        <button
+          onClick={() => {
+            if (!selectedTier || !itemName || !imgUrl) return alert("ts not right twin 🥀");
+            const newItem = {
+              name: itemName,
+              image: imgUrl,
+              key: Date.now() + crypto.randomUUID(),
+            }; // You can change this to an object if needed
+            if (selectedTier === "A") {
+              setTierA([...tierA, newItem]);
+            } else if (selectedTier === "B") {
+              setTierB([...tierB, newItem]);
+            } else if (selectedTier === "C") {
+              setTierC([...tierC, newItem]);
+            } else if (selectedTier === "D") {
+              setTierD([...tierD, newItem]);
+            } else if (selectedTier === "F") {
+              setTierF([...tierF, newItem]);
+            }
+          }}
+        >
+          Add item
+        </button>
 
-      {/* This calls Tier(tier, list) in components/Tier.jsx */}
-      <Tier tier="A" list={aTierItems} />
-      <Tier tier="F" list={fTierItems} />
+        <hr />
+
+        <textarea name="import-data" id="import-data" onChange={(e) => setImportData(e.target.value)} value={importData}></textarea>
+        <button
+          onClick={() => {
+            try {
+              handleDataImport(importData);
+            } catch (e) {
+              alert("ts pmo sm icl twin 🥀💔");
+            }
+          }}
+        >
+          Import
+        </button>
+        <button
+          onClick={() => {
+            const data = JSON.stringify({ A: tierA, B: tierB, C: tierC, D: tierD, F: tierF });
+            navigator.clipboard.writeText(data);
+            setImportData(data);
+            alert("Copied to clipboard (W speed ❤️‍🩹)");
+          }}
+        >
+          Export
+        </button>
+      </div>
+      <div className="tierlist-scroll">
+        <div className="tierlist-container">
+          <Tier name="A" color={colors.A} items={tierA} setItems={setTierA} />
+          <Tier name="B" color={colors.B} items={tierB} setItems={setTierB} />
+          <Tier name="C" color={colors.C} items={tierC} setItems={setTierC} />
+          <Tier name="D" color={colors.D} items={tierD} setItems={setTierD} />
+          <Tier name="F" color={colors.F} items={tierF} setItems={setTierF} />
+        </div>
+      </div>
     </div>
   );
 }
