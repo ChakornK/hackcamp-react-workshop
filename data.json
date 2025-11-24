@@ -5,6 +5,11 @@
       "name": "its so joever",
       "image": "https://preview.redd.it/o-que-significa-esse-meme-reflexivo-ai-de-todos-os-caminhos-v0-ujfn49e8c0qf1.png?width=640&crop=smart&auto=webp&s=3d8e3587fbe7b9b5f47ba730fcdd6d0226aac38d",
       "key": "176324145650627628c78-d589-4c03-8642-2c6cbe46ba48"
+    },
+    {
+      "name": "agartha",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt7MMaRkiMEpSukwLcp6td_V4bggUuxdJH_g&s",
+      "key": "176324198069590024dac-5ef4-4c42-99f4-b249b59b5104"
     }
   ],
   "C": [
@@ -61,11 +66,5 @@
       "key": "1763244056721de96010b-4b8c-482b-b233-13da85d65aa9"
     }
   ],
-  "F": [
-    {
-      "name": "agartha",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt7MMaRkiMEpSukwLcp6td_V4bggUuxdJH_g&s",
-      "key": "176324198069590024dac-5ef4-4c42-99f4-b249b59b5104"
-    }
-  ]
+  "F": []
 }
